@@ -17,3 +17,4 @@ git push -u origin main
 
 ---Bajar---
 
+git pull
