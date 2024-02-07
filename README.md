@@ -16,6 +16,19 @@ git branch -M main
 
 git push -u origin main
 
+----------------------------
+
+git branch -c rama2
+
+git checkout rama2
+
+git add .
+
+git commit -m "first commit"
+
+git branch -M rama2
+
+git push -u origin rama2
 
 ---Bajar---
 
