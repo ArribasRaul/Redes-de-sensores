@@ -17,6 +17,8 @@ void loop() {
   delay(500);
 }
 
+
+
 /* Read input serial */
 int readSerial(char result[]) {
   int i = 0;
