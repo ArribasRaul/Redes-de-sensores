@@ -8,7 +8,6 @@ void setup() {
 
 void loop() {
   delay(100);
-
 }
 
 void receiveEvent(int howMany) {
