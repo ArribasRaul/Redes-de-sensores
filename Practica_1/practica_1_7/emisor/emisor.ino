@@ -129,6 +129,11 @@ void loop() {
     Wire.endTransmission();    // stop transmitting
     Serial.println(z3);
     delay(200);
+    Wire.beginTransmission(8); // transmit to device #8
+    sep = 6666666;
+    I2C_writeAnything (sep);
+    Wire.endTransmission();    // stop transmitting
+    delay(200);
   }
 
   if (flag4 == 1){
@@ -154,3 +159,10 @@ int I2C_writeAnything (const float& value)
           Wire.write(*p++);
     return i;
   }  // end of I2C_writeAnything
+
+
+
+
+
+
+

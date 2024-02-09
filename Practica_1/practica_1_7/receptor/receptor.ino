@@ -4,6 +4,8 @@ float fnum;
 void setup() {
   Wire.begin(8);                // join i2c bus with address #8
   Wire.onReceive(receiveEvent); // function that executes whenever data is received from writer
+  pinMode(LED_BUILTIN, OUTPUT);
+
 }
 
 void loop() {
@@ -24,8 +26,14 @@ void receiveEvent(int howMany) {
     Serial.println("");
     Serial.println("Sensor magnetico:");
   }
+  else if (fnum > 6000000.0){
+    digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+    delay(1000);                       // wait for a second
+    digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+  }
   else{
     Serial.println(fnum);
+
   }
 }
 
