@@ -2,14 +2,14 @@
 #include <WiFi.h>
 #include "time.h"
 
-const char* ssid = "WLAN_XD";
-const char* password = "975230712";
+const char* ssid = "Phone_1_3262";
+const char* password = "raulhermozo";
 
 const char* ntpServer = "pool.ntp.org";
 const long  gmtOffset_sec = 3600;
 const int   daylightOffset_sec = 3600;
 
-IPAddress server(192,168,1,133);  // mi pc
+IPAddress server(192,168,48,142);  // mi pc
 int puerto = 8888;
 
 // Initialize the client library

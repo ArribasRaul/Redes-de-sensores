@@ -5,7 +5,7 @@ import time
 tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
  
 # Bind the socket to server address and port 81
-server_address = ('192.168.1.133', 8888)
+server_address = ('192.168.48.142', 8888)
 tcp_socket.bind(server_address)
  
 # Listen on port 81

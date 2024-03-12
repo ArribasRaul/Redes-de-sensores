@@ -23,13 +23,9 @@ AsyncWebServer server(8888);
 String processor(const String& var){
   Serial.println(var);
   if(var == "STATE"){
-    if(digitalRead(ledPin)){
-      ledState = "ON";
-    }
-    else{
-      ledState = "OFF";
-    }
-    Serial.print(ledState);
+    
+      ledState = getLocalTime();
+    
     return ledState;
   }
   return String();
@@ -62,7 +58,21 @@ void printLocalTime()
     Serial.println("Failed to obtain time");
     return;
   }
-  Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+  Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S"); 
+}
+
+String getLocalTime()
+{
+  struct tm t;
+  if (!getLocalTime(&t))
+  {
+    Serial.println("ERROR tiempo");
+    return "";
+  }
+  time_t currentTime = mktime(&t);
+
+  String s = ctime(&currentTime);
+  return s;
 }
 
 void setup(){
@@ -101,15 +111,13 @@ void setup(){
 
   // Route to set GPIO to HIGH
   server.on("/on", HTTP_GET, [](AsyncWebServerRequest *request){
-    digitalWrite(ledPin, HIGH);
     setCustomTime(2024, 1, 1, 0, 0, 0);
     Serial.println("Reiniciando la hora");
     request->send(SPIFFS, "/index.html", String(), false, processor);
   });
   
   // Route to set GPIO to LOW
-  server.on("/off", HTTP_GET, [](AsyncWebServerRequest *request){
-    digitalWrite(ledPin, LOW);    
+  server.on("/off", HTTP_GET, [](AsyncWebServerRequest *request){   
     request->send(SPIFFS, "/index.html", String(), false, processor);
   });
 
