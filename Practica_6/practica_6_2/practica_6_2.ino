@@ -1,73 +1,37 @@
-#include <ArduinoBLE.h>
-
-BLEService ledService("180A"); // BLE LED Service
-
-// BLE LED Switch Characteristic - custom 128-bit UUID, read and writable by central
-BLEByteCharacteristic switchCharacteristic("2A57", BLERead | BLEWrite);
+int Led = 5;
+int inercia = 0;
 
 void setup() {
-  Serial.begin(115200);
-  while (!Serial);
+  Serial.begin(112500);
+  delay(1000);
 
-  // begin initialization
-  if (!BLE.begin()) {
-    Serial.println("starting Bluetooth® Low Energy failed!");
+  xTaskCreate(Tarea1,"Tarea1",10000,NULL,1,NULL);
+  xTaskCreate(Tarea2,"Tarea2",10000,NULL,1,NULL);
 
-    while (1);
-  }
-
-  // set advertised local name and service UUID:
-  BLE.setLocalName("ESP_Raul");
-  BLE.setAdvertisedService(ledService);
-
-  // add the characteristic to the service
-  ledService.addCharacteristic(switchCharacteristic);
-
-  // add service
-  BLE.addService(ledService);
-
-  // set the initial value for the characteristic:
-  switchCharacteristic.writeValue(0);
-
-  // start advertising
-  BLE.advertise();
-
-  Serial.println("BLE LED Peripheral");
+  pinMode(Led, OUTPUT);
 }
 
 void loop() {
-  BLEDevice central = BLE.central();
+  delay(1000);
+}
 
-  // if a central is connected to peripheral:
-  if (central) {
-    Serial.print("Connected to central: ");
-    // print the central's MAC address:
-    Serial.println(central.address());
-
-    // while the central is still connected to peripheral:
-    while (central.connected()) {
-      // if the remote device wrote to the characteristic,
-      // use the value to control the LED:
-      if (switchCharacteristic.written()) {
-        switch (switchCharacteristic.value()) {   // any value other than 0
-          case 01:
-            Serial.println("Red LED on");
-            break;
-          case 02:
-            Serial.println("Green LED on");
-            break;
-          case 03:
-            Serial.println("Blue LED on");
-            break;
-          default:
-            Serial.println(F("LEDs off"));
-            break;
-        }
-      }
-    }
-
-    // when the central disconnects, print it out:
-    Serial.print(F("Disconnected from central: "));
-    Serial.println(central.address());
+void Tarea1( void * parameter ){
+  while(true){
+    inercia = random(0, 100);
+    vTaskDelay (100); //Ejecuta esta tarea cada 100 milisegundos
   }
+  vTaskDelete(NULL);  // sin esto se reinicia el micro
+}
+
+void Tarea2( void * parameter){
+  while(true){
+    Serial.println(inercia);
+    digitalWrite(Led, HIGH);
+    Serial.println("LED on");
+    delay(200);
+    digitalWrite(Led, LOW);
+    Serial.println("LED off");
+    vTaskDelay (800); //Ejecuta esta tarea cada 800 milisegundos
+  }
+  vTaskDelete(NULL);
 }
