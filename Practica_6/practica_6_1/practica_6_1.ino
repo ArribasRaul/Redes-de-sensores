@@ -1,45 +1,35 @@
-/*
-    Based on Neil Kolban example for IDF: https://github.com/nkolban/esp32-snippets/blob/master/cpp_utils/tests/BLE%20Tests/SampleServer.cpp
-    Ported to Arduino ESP32 by Evandro Copercini
-    updates by chegewara
-*/
-
-#include <BLEDevice.h>
-#include <BLEUtils.h>
-#include <BLEServer.h>
-
-// See the following for generating UUIDs:
-// https://www.uuidgenerator.net/
-
-#define SERVICE_UUID        "a933e160-4738-4913-8c2b-289ea4c2bf7d"
-#define CHARACTERISTIC_UUID "829be981-bb5b-4807-a9dd-ac2655b476d6"
+int Led = 5;
 
 void setup() {
-  Serial.begin(115200);
-  Serial.println("Starting BLE work!");
+  Serial.begin(112500);
+  delay(1000);
 
-  BLEDevice::init("ESP32_Raul");
-  BLEServer *pServer = BLEDevice::createServer();
-  BLEService *pService = pServer->createService(SERVICE_UUID);
-  BLECharacteristic *pCharacteristic = pService->createCharacteristic(
-                                         CHARACTERISTIC_UUID,
-                                         BLECharacteristic::PROPERTY_READ |
-                                         BLECharacteristic::PROPERTY_WRITE
-                                       );
+  xTaskCreate(Tarea1,"Tarea1",10000,NULL,1,NULL);
+  xTaskCreate(Tarea2,"Tarea2",10000,NULL,1,NULL);
 
-  pCharacteristic->setValue("Clase redes de sensores");
-  pService->start();
-  // BLEAdvertising *pAdvertising = pServer->getAdvertising();  // this still is working for backward compatibility
-  BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
-  pAdvertising->addServiceUUID(SERVICE_UUID);
-  pAdvertising->setScanResponse(true);
-  pAdvertising->setMinPreferred(0x06);  // functions that help with iPhone connections issue
-  pAdvertising->setMinPreferred(0x12);
-  BLEDevice::startAdvertising();
-  Serial.println("Characteristic defined! Now you can read it in your phone!");
+  pinMode(Led, OUTPUT);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  delay(2000);
+  delay(1000);
+}
+
+void Tarea1( void * parameter ){
+  while(true){
+    Serial.println("Hola mundo");
+    vTaskDelay (1000); //Ejecuta esta tarea cada 1000 milisegundos
+  }
+  vTaskDelete(NULL);  // sin esto se reinicia el micro
+}
+
+void Tarea2( void * parameter){
+  while(true){
+    digitalWrite(Led, HIGH);
+    Serial.println("LED on");
+    delay(200);
+    digitalWrite(Led, LOW);
+    Serial.println("LED off");
+    delay(200);
+  }
+  vTaskDelete(NULL);
 }
