@@ -28,10 +28,13 @@ void loop() {
     flag = 0;
     if (IMU.accelerationAvailable()) {
       IMU.readAcceleration(x1, y1, z1);
+    // if(IMU.gyroscopeAvailable()){
+    //   IMU.readGyroscope(x1, y1, z1);
+
       Serial.print(x1);
-      Serial.print(';');
+      Serial.print(',');
       Serial.print(y1);
-      Serial.print(';');
+      Serial.print(',');
       Serial.println(z1);
     }
   }

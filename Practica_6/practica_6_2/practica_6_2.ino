@@ -18,9 +18,9 @@ void loop() {
 void Tarea1( void * parameter ){
   while(true){
     inercia = random(0, 100);
-    vTaskDelay (100); //Ejecuta esta tarea cada 100 milisegundos
+    vTaskDelay(100); // Ejecuta esta tarea cada 100 milisegundos
   }
-  vTaskDelete(NULL);  // sin esto se reinicia el micro
+  vTaskDelete(NULL);  // Sin esto se reinicia el micro
 }
 
 void Tarea2( void * parameter){
@@ -31,7 +31,7 @@ void Tarea2( void * parameter){
     delay(200);
     digitalWrite(Led, LOW);
     Serial.println("LED off");
-    vTaskDelay (800); //Ejecuta esta tarea cada 800 milisegundos
+    vTaskDelay(800); // Ejecuta esta tarea cada 800 milisegundos
   }
-  vTaskDelete(NULL);
+  vTaskDelete(NULL);  // Sin esto se reinicia el micro
 }
