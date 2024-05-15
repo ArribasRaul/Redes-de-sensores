@@ -1,4 +1,4 @@
-# Práctica 3 - Comunicación, ges�ón y representación de datos de sensores con Python
+# Práctica 3 - Comunicación, gestión y representación de datos de sensores con Python
 
 ## Objetivos de la Práctica
 
